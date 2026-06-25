@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
+// workTime = 1500 secs (25 times x 60 secs), breakTime = 300 secs (5 times x 60 secs)
+const workTime = 25 * 60;
+const breakTime = 5 * 60;
+
 function Timer() {
-  // Manage remaining time. Set up 25 mins(1500 seconds) as an initial value.
-  const [remainingTime, setRemainingTime] = useState(1500);
+  // Manage remaining time. Set up workTime (1500 secs) as an initial value.
+  const [remainingTime, setRemainingTime] = useState(workTime);
   // Manage if timer is active or not.
   const [isActive, setIsActive] = useState(false);
+  
+  const [mode, setMode] = useState('work');
   
   useEffect(() => {
     let intervalId = null;
@@ -25,6 +31,26 @@ function Timer() {
     };
   }, [isActive, remainingTime]);
   
+  // Mode control between work or break
+  useEffect(() => {
+    // if Timer is 0 and timer is active, mode will change.
+    if (remainingTime === 0 && isActive) {
+      if (mode === 'work') {
+        // Once work is done, switch to break mode.
+        setMode('break');
+        setRemainingTime(breakTime);
+      } else {
+        // Once break is done, switch to work mode.
+        setMode('work');
+        setRemainingTime(workTime);
+      }
+      
+      // Once mode is changed, timer automatically restarts (5 mins(break) or 25 mis(work)).  -> If don't want automatic start, then set setIsActive(false).
+      setIsActive(true);
+      alert("Time's up!");
+    }
+  }, [remainingTime, isActive, mode]);
+  
   // Display time
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
@@ -39,11 +65,15 @@ function Timer() {
 
   const resetTimer = () => {
     setIsActive(false);
-    setRemainingTime(1500); 
+    setRemainingTime(mode === 'work' ? workTime : breakTime); 
   };
 
   return (
     <div style={{ textAlign: 'center', marginTop: '50px' }}>
+      <strong className='mode-label' style={{color: mode === 'work' ? '#ff6b6b' : '#34ebae'}}>
+        {mode === 'work' ? '💻 Work Time' : '☕ Break time'}
+      </strong>
+      
       <h1>{formatTime(remainingTime)}</h1>
       
       {/* 1. When opening this app, isActive:false
