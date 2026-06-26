@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 // workTime = 1500 secs (25 times x 60 secs), breakTime = 300 secs (5 times x 60 secs)
-const workTime = 25 * 60;
-const breakTime = 5 * 60;
+// const workTime = 25 * 60;
+// const breakTime = 5 * 60;
+
+// Test
+const workTime = 3;
+const breakTime = 5;
 
 function Timer() {
   // Manage remaining time. Set up workTime (1500 secs) as an initial value.
@@ -11,6 +15,8 @@ function Timer() {
   const [isActive, setIsActive] = useState(false);
   
   const [mode, setMode] = useState('work');
+  
+  const [isMuted, setIsMuted] = useState(false);
   
   useEffect(() => {
     let intervalId = null;
@@ -35,6 +41,25 @@ function Timer() {
   useEffect(() => {
     // if Timer is 0 and timer is active, mode will change.
     if (remainingTime === 0 && isActive) {
+      if (!isMuted) {
+       // Alarm audio
+       const audio = new Audio('/alarm.mp3')
+       // Play audio -> If error occurs, display thia error in console.
+       audio.play().catch(error => {
+        console.log(error);
+       }) 
+       
+       setTimeout(() => {
+        // When alert pops up on the screen, alert function stops JavaScript -> Once clicking OK, the next code (audio.pause) will be implemented.-> audio.currentTime = 0; Reset the playback position to 0 seconds.
+        alert("Time's up!");
+        audio.pause();
+        audio.currentTime = 0;
+       }, 100);
+      } else {
+        // When muted, only alert pop-up (no alarm).
+        alert("Time's up!");
+      }
+      
       if (mode === 'work') {
         // Once work is done, switch to break mode.
         setMode('break');
@@ -46,10 +71,9 @@ function Timer() {
       }
       
       // Once mode is changed, timer automatically restarts (5 mins(break) or 25 mis(work)).  -> If don't want automatic start, then set setIsActive(false).
-      setIsActive(true);
-      alert("Time's up!");
+      setIsActive(true);  
     }
-  }, [remainingTime, isActive, mode]);
+  }, [remainingTime, isActive, mode,, isMuted]);
   
   // Display time
   const formatTime = (seconds) => {
@@ -86,6 +110,11 @@ function Timer() {
       <button onClick={resetTimer} style={{ padding: '10px 20px' }}>
         Reset
       </button>
+      
+      <button onClick={() => setIsMuted(!isMuted)} style={{ padding: '10px 20px' }}>
+        {isMuted ? '🔇 Unmute' : '🔊 Mute'}
+      </button>
+      
     </div>
   );
 }
