@@ -18,6 +18,12 @@ function Timer() {
   
   const [isMuted, setIsMuted] = useState(false);
   
+  const [targetTime, setTargetTime] = useState(() => {
+    // Load the setting saved in Local Storage (or the default of 120 minutes if it does not exist) as an initial value.
+    const savedTime = localStorage.getItem('pomodoro_target_time');
+    return savedTime ? Number(savedTime) : 120; 
+  });
+  
   useEffect(() => {
     let intervalId = null;
     
@@ -60,6 +66,31 @@ function Timer() {
         alert("Time's up!");
       }
       
+      // Only when work is done, record the study time.
+      if (mode === 'work') {
+        // Load the previously saved history list. If it does not exist, return an empty array [].
+        // -> Since LocalStorage always overwrites existing data, if just save new data every time without loading the previous data first, LocalStorage will only ever contain the most recent entry.
+        const existingHistory = localStorage.getItem('pomodoro_history');
+        
+        // If existingHistory is found, convert it into aarray. Otherwise, return an empty array. 
+        // .parse: Convert a string retrieved from Local Storage (which was originally an array turned into a string) back into an array that can be used for calculations in JavaScript.
+        const historyArray = existingHistory ? JSON.parse(existingHistory) : [];
+        
+        // Calculate and log the total number of minutes spent studying during the Pomodoro session that just finished.
+        // Real code
+        // const minutesStudied = workTime / 60;
+        
+        // Test code
+        const minutesStudied = Math.round(workTime / 60) || 25; 
+        
+        // Add new study history to array.
+        historyArray.push(minutesStudied);
+        
+        // Convert array into string, and then Save it in Local Storage.
+        // .stringify: convert an array into string -> Local Storage can save only sring. 
+        localStorage.setItem('pomodoro_history', JSON.stringify(historyArray));
+      }
+      
       if (mode === 'work') {
         // Once work is done, switch to break mode.
         setMode('break');
@@ -94,6 +125,12 @@ function Timer() {
 
   return (
     <div style={{ textAlign: 'center', marginTop: '50px' }}>
+      <div style={{ marginBottom: '20px', padding: '10px', backgroundColor: '#e9ecef', borderRadius: '8px', display: 'inline-block' }}>
+        🎯 Today's Study Target : <strong>{targetTime} mins</strong>（{(targetTime / 60).toFixed(1)} hours）
+      </div>
+
+      <br />
+      
       <strong className='mode-label' style={{color: mode === 'work' ? '#ff6b6b' : '#34ebae'}}>
         {mode === 'work' ? '💻 Work Time' : '☕ Break time'}
       </strong>
