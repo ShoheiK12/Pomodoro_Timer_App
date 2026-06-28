@@ -19,6 +19,14 @@ function Review() {
 
   // Calculate achievement rate
   const achievementRate = Math.min(Math.round((totalStudiedMinutes / targetTime) * 100), 100);
+  
+  // Pie chart parameters
+  const radius = 50; 
+  const strokeWidth = 10; 
+  const circumference = radius * 2 * Math.PI;
+  // Calculate how many much of the line is hidden based on achievement rate.
+  // SVG strokeDashoffset can only control how much of the line is "hidden" (pushed out). To show the actual progress, we inversely calculate the hidden amount.
+  const strokeDashoffset = circumference - (achievementRate / 100) * circumference;
 
   // Reset histories
   const handleClearHistory = () => {
@@ -32,6 +40,41 @@ function Review() {
   return (
     <div style={{ textAlign: 'center', marginTop: '50px' }}>
       <h1>Review</h1>
+      
+      {/* Pie chart */}
+      <div style={{ position: 'relative', width: '140px', height: '140px', margin: '30px auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        
+        <svg style={{ width: '100%', height: '100%', transform: 'rotate(-90deg)' }}>
+          {/* Base circle */}
+          <circle
+            cx="70"
+            cy="70"
+            r={radius}
+            fill="transparent"
+            stroke="#e6e6e6"
+            strokeWidth={strokeWidth}
+          />
+          {/* Blue circle showing progress */}
+          <circle
+            cx="70"
+            cy="70"
+            r={radius}
+            fill="transparent"
+            stroke="#007bff"
+            strokeWidth={strokeWidth}
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round" 
+            style={{ transition: 'stroke-dashoffset 0.5s ease-in-out' }}
+          />
+        </svg>
+
+        {/* Display achievement rate inside circle */}
+        <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#333' }}>{achievementRate}%</span>
+          <span style={{ fontSize: '0.75rem', color: '#888' }}>Achievement Rate</span>
+        </div>
+      </div>
       
       {/* Summary */}
       <div style={{ display: 'flex', justifyContent: 'space-around', margin: '20px 0', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
