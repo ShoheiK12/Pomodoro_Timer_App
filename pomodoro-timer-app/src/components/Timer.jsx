@@ -76,15 +76,14 @@ function Timer() {
         // .parse: Convert a string retrieved from Local Storage (which was originally an array turned into a string) back into an array that can be used for calculations in JavaScript.
         const historyArray = existingHistory ? JSON.parse(existingHistory) : [];
         
-        // Calculate and log the total number of minutes spent studying during the Pomodoro session that just finished.
-        // Real code
-        // const minutesStudied = workTime / 60;
+        // Retrieve the latest target time string that the user saved in the settings screen from LocalStorage.
+        const savedWorkMinutes = localStorage.getItem('pomodoro_focus_time');
         
-        // Test code
-        const minutesStudied = Math.round(workTime / 60) || 25; 
+        // If savedWorkMinutes, convert it to number. Otherwise, use default (25 mins).
+        const minutesToRecord = savedWorkMinutes ? Number(savedWorkMinutes) : 25;
         
         // Add new study history to array.
-        historyArray.push(minutesStudied);
+        historyArray.push(minutesToRecord);
         
         // Convert array into string, and then Save it in Local Storage.
         // .stringify: convert an array into string -> Local Storage can save only sring. 
@@ -104,7 +103,7 @@ function Timer() {
       // Once mode is changed, timer automatically restarts (5 mins(break) or 25 mis(work)).  -> If don't want automatic start, then set setIsActive(false).
       setIsActive(true);  
     }
-  }, [remainingTime, isActive, mode,, isMuted]);
+  }, [remainingTime, isActive, mode, isMuted, workTime, breakTime]);
   
   // Display time
   const formatTime = (seconds) => {
@@ -132,7 +131,7 @@ function Timer() {
       <br />
       
       <strong className='mode-label' style={{color: mode === 'work' ? '#ff6b6b' : '#34ebae'}}>
-        {mode === 'work' ? '💻 Work Time' : '☕ Break time'}
+        {mode === 'work' ? '💻 Study Time' : '☕ Break time'}
       </strong>
       
       <h1>{formatTime(remainingTime)}</h1>

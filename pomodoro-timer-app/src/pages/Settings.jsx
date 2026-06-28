@@ -8,6 +8,12 @@ function Settings() {
     return savedTime ? Number(savedTime) : 120;
   });
   
+  // Set up focus time per session (default 25 mins).
+  const [focusTime, setFocusTime] = useState(() => {
+    const savedWork = localStorage.getItem('pomodoro_focus_time');
+    return savedWork ? Number(savedWork) : 25; 
+  });
+  
   // Process when the form is submitted (the save button is clicked).
   const handleSubmit = (e) => {
     // Prevent the default browser reload on form submission.
@@ -15,10 +21,13 @@ function Settings() {
     // e: event; button clicked and form submitted
     e.preventDefault();
     
-    // Save the time as 'pomodoro_target_time'.
+    // Save the total study time as 'pomodoro_target_time'.
     localStorage.setItem('pomodoro_target_time', targetTime);
     
-    alert(`Saved your target time: ${targetTime} mins（${(targetTime / 60).toFixed(1)} hours)`)
+    // Save focus time per session as 'pomodoro_focus_time'.
+    localStorage.setItem('pomodoro_focus_time', focusTime);
+    
+    alert(`Saved your target time successfully.\nToday's target: ${targetTime} mins（${(targetTime / 60).toFixed(1)} hours), Focus time per session: ${focusTime} mins`)
   }
   return (
     <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px', textAlign: 'center' }}>
@@ -36,9 +45,24 @@ function Settings() {
             style={{ padding: '8px', marginLeft: '10px', width: '80px', fontSize: '1rem' }}
           />
         </label>
-
         <div style={{ color: '#666', fontSize: '0.9rem' }}>
           ➔ Conversion from mins to hours: <strong>{(targetTime / 60).toFixed(1)} hours</strong>
+        </div>
+        
+        <div>
+          <label style={{ fontSize: '1.1rem' }}>
+            Focus time by mins: 
+            <input 
+              type="number" 
+              value={focusTime} 
+              onChange={(e) => setFocusTime(Number(e.target.value))}
+              min="1"
+              style={{ padding: '8px', marginLeft: '10px', width: '80px', fontSize: '1rem' }}
+            />
+          </label>
+          <div style={{ color: '#666', fontSize: '0.9rem', marginTop: '5px' }}>
+            ➔ Default is 25 mins. This will be recorded in your history.
+          </div>
         </div>
 
         <button 
