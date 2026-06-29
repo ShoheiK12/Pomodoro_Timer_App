@@ -1,20 +1,32 @@
 import React, { useState, useEffect } from 'react';
 
-// workTime = 1500 secs (25 times x 60 secs), breakTime = 300 secs (5 times x 60 secs)
-// const workTime = 25 * 60;
-// const breakTime = 5 * 60;
-
 // Test
-const workTime = 3;
-const breakTime = 5;
+// const focusTime = 3;
+// const breakTime = 5;
 
 function Timer() {
-  // Manage remaining time. Set up workTime (1500 secs) as an initial value.
-  const [remainingTime, setRemainingTime] = useState(workTime);
+  // Load the default values for focus and break intervals from LocalStorage.
+  // If no settings, default values of 25 minutes (1,500 seconds) and 5 minutes (300 seconds) will be used.
+  const [focusTime, setFocusTime] = useState(() => {
+    // Lazy Initialization: Runs only once on the initial render to avoid reading from LocalStorage on every subsequent re-render.
+    const savedFocus = localStorage.getItem('pomodoro_focus_time');
+    // Convert time from mins to secs. Because remaianingTime using wfocusTime is secs, so focusTime should be secs.
+    return savedFocus ? Number(savedFocus) * 60 : 25 * 60; // 
+  });
+
+  const [breakTime, setBreakTime] = useState(() => {
+    // If no settings, break time is 5 mins (300 secs).
+    // Lazy Initialization.
+    const savedBreak = localStorage.getItem('pomodoro_break_time');
+    return savedBreak ? Number(savedBreak) * 60 : 5 * 60;
+  });
+  
+  // Manage remaining time. Set up focusTime (1500 secs) as an initial value.
+  const [remainingTime, setRemainingTime] = useState(focusTime);
   // Manage if timer is active or not.
   const [isActive, setIsActive] = useState(false);
   
-  const [mode, setMode] = useState('work');
+  const [mode, setMode] = useState('focus');
   
   const [isMuted, setIsMuted] = useState(false);
   
@@ -43,7 +55,7 @@ function Timer() {
     };
   }, [isActive, remainingTime]);
   
-  // Mode control between work or break
+  // Mode control between focus or break
   useEffect(() => {
     // if Timer is 0 and timer is active, mode will change.
     if (remainingTime === 0 && isActive) {
@@ -66,8 +78,8 @@ function Timer() {
         alert("Time's up!");
       }
       
-      // Only when work is done, record the study time.
-      if (mode === 'work') {
+      // Only when focus is done, record the study time.
+      if (mode === 'focus') {
         // Load the previously saved history list. If it does not exist, return an empty array [].
         // -> Since LocalStorage always overwrites existing data, if just save new data every time without loading the previous data first, LocalStorage will only ever contain the most recent entry.
         const existingHistory = localStorage.getItem('pomodoro_history');
@@ -77,10 +89,10 @@ function Timer() {
         const historyArray = existingHistory ? JSON.parse(existingHistory) : [];
         
         // Retrieve the latest target time string that the user saved in the settings screen from LocalStorage.
-        const savedWorkMinutes = localStorage.getItem('pomodoro_focus_time');
+        const savedFocusMinutes = localStorage.getItem('pomodoro_focus_time');
         
-        // If savedWorkMinutes, convert it to number. Otherwise, use default (25 mins).
-        const minutesToRecord = savedWorkMinutes ? Number(savedWorkMinutes) : 25;
+        // If savedFocusMinutes, convert it to number. Otherwise, use default (25 mins).
+        const minutesToRecord = savedFocusMinutes ? Number(savedFocusMinutes) : 25;
         
         // Add new study history to array.
         historyArray.push(minutesToRecord);
@@ -90,20 +102,20 @@ function Timer() {
         localStorage.setItem('pomodoro_history', JSON.stringify(historyArray));
       }
       
-      if (mode === 'work') {
-        // Once work is done, switch to break mode.
+      if (mode === 'focus') {
+        // Once focus is done, switch to break mode.
         setMode('break');
         setRemainingTime(breakTime);
       } else {
-        // Once break is done, switch to work mode.
-        setMode('work');
-        setRemainingTime(workTime);
+        // Once break is done, switch to focus mode.
+        setMode('focus');
+        setRemainingTime(focusTime);
       }
       
-      // Once mode is changed, timer automatically restarts (5 mins(break) or 25 mis(work)).  -> If don't want automatic start, then set setIsActive(false).
+      // Once mode is changed, timer automatically restarts (5 mins(break) or 25 mis(focus)).  -> If don't want automatic start, then set setIsActive(false).
       setIsActive(true);  
     }
-  }, [remainingTime, isActive, mode, isMuted, workTime, breakTime]);
+  }, [remainingTime, isActive, mode, isMuted, focusTime, breakTime]);
   
   // Display time
   const formatTime = (seconds) => {
@@ -119,7 +131,17 @@ function Timer() {
 
   const resetTimer = () => {
     setIsActive(false);
-    setRemainingTime(mode === 'work' ? workTime : breakTime); 
+    setRemainingTime(mode === 'focus' ? focusTime : breakTime); 
+  };
+  
+  // Skip function for development
+  const handleSkip = () => {
+    if (isActive) {
+      // If timer is active, skip remaining time (remaining time is gonaa be 0 sec).
+      setRemainingTime(0);
+    } else {
+      alert('Unable to skip the remaining time when timer is not active. Please start timer.');
+    }
   };
 
   return (
@@ -130,8 +152,8 @@ function Timer() {
 
       <br />
       
-      <strong className='mode-label' style={{color: mode === 'work' ? '#ff6b6b' : '#34ebae'}}>
-        {mode === 'work' ? '💻 Study Time' : '☕ Break time'}
+      <strong className='mode-label' style={{color: mode === 'focus' ? '#ff6b6b' : '#34ebae'}}>
+        {mode === 'focus' ? '💻 Study Time' : '☕ Break time'}
       </strong>
       
       <h1>{formatTime(remainingTime)}</h1>
@@ -150,6 +172,27 @@ function Timer() {
       <button onClick={() => setIsMuted(!isMuted)} style={{ padding: '10px 20px' }}>
         {isMuted ? '🔇 Unmute' : '🔊 Mute'}
       </button>
+      
+      {/* Skip button for development/test. */}
+      <div style={{ marginTop: '30px' }}>
+        <button 
+          onClick={handleSkip}
+          style={{
+            padding: '5px 10px',
+            fontSize: '0.8rem',
+            backgroundColor: '#ffebee',
+            color: '#c62828',
+            border: '1px dashed #c62828',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          ⏩ [Dev] Skip to 0s
+        </button>
+        <p style={{ fontSize: '0.75rem', color: '#999', marginTop: '5px' }}>
+          *Note: This is skip button for development/test. You can force-quit the timer to test the history-saving feature.
+        </p>
+      </div>
       
     </div>
   );

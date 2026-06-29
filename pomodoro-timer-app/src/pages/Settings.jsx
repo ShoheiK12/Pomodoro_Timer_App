@@ -10,8 +10,8 @@ function Settings() {
   
   // Set up focus time per session (default 25 mins).
   const [focusTime, setFocusTime] = useState(() => {
-    const savedWork = localStorage.getItem('pomodoro_focus_time');
-    return savedWork ? Number(savedWork) : 25; 
+    const savedFocus = localStorage.getItem('pomodoro_focus_time');
+    return savedFocus ? Number(savedFocus) : 25; 
   });
   
   // Process when the form is submitted (the save button is clicked).
