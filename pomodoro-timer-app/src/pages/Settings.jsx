@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import '../App.css';
 
 function Settings() {
   const [targetTime, setTargetTime] = useState(() => {
@@ -30,53 +31,44 @@ function Settings() {
     alert(`Saved your target time successfully.\nToday's target: ${targetTime} mins（${(targetTime / 60).toFixed(1)} hours), Focus time per session: ${focusTime} mins`)
   }
   return (
-    <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px', textAlign: 'center' }}>
+    <div className="settings-wrapper">
       <h2>Study Time Setting</h2>
       <p>Set your total target study time for today.</p>
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-        <label style={{ fontSize: '1.1rem' }}>
-          Target time by mins: 
-          <input 
+      <form onSubmit={handleSubmit} className="settings-form">
+        <div className="settings-field-group">
+          <label className="settings-label-text">
+            Target time by mins: 
+            <input 
             type="number" 
             value={targetTime} 
             onChange={(e) => setTargetTime(Number(e.target.value))}
             min="1"
-            style={{ padding: '8px', marginLeft: '10px', width: '80px', fontSize: '1rem' }}
-          />
-        </label>
-        <div style={{ color: '#666', fontSize: '0.9rem' }}>
-          ➔ Conversion from mins to hours: <strong>{(targetTime / 60).toFixed(1)} hours</strong>
+            className="settings-number-input"
+            />
+          </label>
+          <div className="settings-help-text">
+            ➔ Conversion from mins to hours: <strong>{(targetTime / 60).toFixed(1)} hours</strong>
+          </div>
         </div>
         
-        <div>
-          <label style={{ fontSize: '1.1rem' }}>
+        <div className="settings-field-group">
+          <label className="settings-label-text">
             Focus time by mins: 
             <input 
               type="number" 
               value={focusTime} 
               onChange={(e) => setFocusTime(Number(e.target.value))}
               min="1"
-              style={{ padding: '8px', marginLeft: '10px', width: '80px', fontSize: '1rem' }}
+              className="settings-number-input"
             />
           </label>
-          <div style={{ color: '#666', fontSize: '0.9rem', marginTop: '5px' }}>
+          <div className="settings-help-text">
             ➔ Default is 25 mins. This will be recorded in your history.
           </div>
         </div>
 
-        <button 
-          type="submit" 
-          style={{ 
-            padding: '10px', 
-            backgroundColor: '#28a745',
-            color: 'white', 
-            border: 'none', 
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '1rem'
-          }}
-        >
+        <button type="submit" className="settings-save-button">
           Save the setting
         </button>
       </form>

@@ -1,14 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router';
+import '../App.css';
 
 function NotFound() {
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      <h2>🚫 404 - Page Not Found</h2>
-      <p>The page you are looking for might have been removed or moved.</p>
+    <div className="notfound-container">
+      <h2 className="notfound-title">🚫 404 - Page Not Found</h2>
+      <p className="notfound-text">The page you are looking for might have been removed or moved.</p>
       
       {/* Link to Timer page. */}
-      <Link to="/" style={{ color: '#007bff', textDecoration: 'underline' }}>
+      <Link to="/" className="notfound-link">
         Back to Pomodoro Timer page.
       </Link>
     </div>

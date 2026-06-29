@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../App.css';
 
 // Test
 // const focusTime = 3;
@@ -145,14 +146,14 @@ function Timer() {
   };
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      <div style={{ marginBottom: '20px', padding: '10px', backgroundColor: '#e9ecef', borderRadius: '8px', display: 'inline-block' }}>
+    <div className="timer-container">
+      <div className="target-badge">
         🎯 Today's Study Target : <strong>{targetTime} mins</strong>（{(targetTime / 60).toFixed(1)} hours）
       </div>
 
       <br />
       
-      <strong className='mode-label' style={{color: mode === 'focus' ? '#ff6b6b' : '#34ebae'}}>
+      <strong className={mode === 'focus' ? 'mode-label-focus' : 'mode-label-break'}>
         {mode === 'focus' ? '💻 Study Time' : '☕ Break time'}
       </strong>
       
@@ -161,35 +162,25 @@ function Timer() {
       {/* 1. When opening this app, isActive:false
           2. When clicking button, toggleTimer will be active, which means isActive:true  
           3. When isActive:true, 'Pause' will appear.*/}
-      <button onClick={toggleTimer} style={{ marginRight: '10px', padding: '10px 20px' }}>
+      <button onClick={toggleTimer} className="timer-button">
         {isActive ? 'Pause' : 'Start'}
       </button>
       
-      <button onClick={resetTimer} style={{ padding: '10px 20px' }}>
+      <button onClick={resetTimer} className="timer-button-secondary">
         Reset
       </button>
       
-      <button onClick={() => setIsMuted(!isMuted)} style={{ padding: '10px 20px' }}>
+      <button onClick={() => setIsMuted(!isMuted)} className="timer-button-secondary">
         {isMuted ? '🔇 Unmute' : '🔊 Mute'}
       </button>
       
       {/* Skip button for development/test. */}
-      <div style={{ marginTop: '30px' }}>
+      <div className="dev-skip-container">
         <button 
-          onClick={handleSkip}
-          style={{
-            padding: '5px 10px',
-            fontSize: '0.8rem',
-            backgroundColor: '#ffebee',
-            color: '#c62828',
-            border: '1px dashed #c62828',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}
-        >
+          onClick={handleSkip} className="dev-skip-button">
           ⏩ [Dev] Skip to 0s
         </button>
-        <p style={{ fontSize: '0.75rem', color: '#999', marginTop: '5px' }}>
+        <p className="dev-skip-note">
           *Note: This is skip button for development/test. You can force-quit the timer to test the history-saving feature.
         </p>
       </div>

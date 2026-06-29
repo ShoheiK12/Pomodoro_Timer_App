@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import '../App.css';
 
 function Review() {
   // Extract study histories from Local Storage and then convert them into array.
@@ -38,13 +39,13 @@ function Review() {
   }
   
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
+    <div className="review-container">
       <h1>Review</h1>
       
       {/* Pie chart */}
-      <div style={{ position: 'relative', width: '140px', height: '140px', margin: '30px auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="chart-wrapper">
         
-        <svg style={{ width: '100%', height: '100%', transform: 'rotate(-90deg)' }}>
+        <svg className="chart-svg">
           {/* Base circle */}
           <circle
             cx="70"
@@ -65,32 +66,32 @@ function Review() {
             strokeDasharray={circumference}
             strokeDashoffset={strokeDashoffset}
             strokeLinecap="round" 
-            style={{ transition: 'stroke-dashoffset 0.5s ease-in-out' }}
+            className="chart-progress-circle"
           />
         </svg>
 
         {/* Display achievement rate inside circle */}
-        <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#333' }}>{achievementRate}%</span>
-          <span style={{ fontSize: '0.75rem', color: '#888' }}>Achievement Rate</span>
+        <div className="chart-center-text">
+          <span className="chart-rate-num">{achievementRate}%</span>
+          <span sclassName="chart-rate-label">Achievement Rate</span>
         </div>
       </div>
       
       {/* Summary */}
-      <div style={{ display: 'flex', justifyContent: 'space-around', margin: '20px 0', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+      <div className="summary-container">
         <div>
-          <span style={{ fontSize: '0.9rem', color: '#666' }}>Today's Target</span>
-          <h3 style={{ margin: '5px 0' }}>{targetTime} mins</h3>
+          <span className="summary-label">Today's Target</span>
+          <h3 className="summary-value">{targetTime} mins</h3>
         </div>
-        <div style={{ borderLeft: '1px solid #ccc' }}></div>
+        <div className="summary-divider"></div>
         <div>
-          <span style={{ fontSize: '0.9rem', color: '#666' }}>Total Study Time</span>
-          <h3 style={{ margin: '5px 0', color: '#28a745' }}>{totalStudiedMinutes} mins</h3>
+          <span className="summary-label">Total Study Time</span>
+          <h3 className="summary-value-green">{totalStudiedMinutes} mins</h3>
         </div>
-        <div style={{ borderLeft: '1px solid #ccc' }}></div>
+        <div className="summary-divider"></div>
         <div>
-          <span style={{ fontSize: '0.9rem', color: '#666' }}>Achievement Rate</span>
-          <h3 style={{ margin: '5px 0', color: '#007bff' }}>{achievementRate}%</h3>
+          <span className="summary-label">Achievement Rate</span>
+          <h3 className="summary-value-blue">{achievementRate}%</h3>
         </div>
       </div>
       
@@ -99,11 +100,11 @@ function Review() {
       <br /><br />
       Pomodoro counts: {history.length}
       {history.length === 0 ? (
-        <p style={{ color: '#888' }}>There is no study histories for today yet. Let's complete today's session.</p>
+        <p className="empty-history-text">There is no study histories for today yet. Let's complete today's session.</p>
       ) : (
-        <ul style={{ listStyle: 'none', padding: 0, textAlign: 'left', maxWidth: '300px', margin: '0 auto' }}>
+        <ul className="history-list">
           {history.map((minutes, index) => (
-            <li key={index} style={{ padding: '8px 0', borderBottom: '1px solid #eee', display: 'flex', justifyContent: 'space-between' }}>
+            <li key={index} className="history-item">
               <span>⏱️ {index + 1} times:</span>
               <strong>{minutes} mins</strong>
             </li>
@@ -113,10 +114,7 @@ function Review() {
       
       {/* Reset button */}
       {history.length > 0 && (
-        <button 
-          onClick={handleClearHistory}
-          style={{ marginTop: '30px', padding: '8px 15px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '0.9rem' }}
-        >
+        <button onClick={handleClearHistory} className="history-reset-button">
           Reset study histories.
         </button>
       )}
