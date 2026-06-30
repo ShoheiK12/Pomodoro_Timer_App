@@ -1,3 +1,50 @@
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+  background-attachment: fixed;
+}
+
+/* App.jsx */
+.app-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  text-align: center;
+  font-family: sans-serif;
+  box-sizing: border-box;
+  border-radius: 16px;
+}
+
+/* Nav (App.jsx) */
+.app-nav {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 30px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.app-nav-link {
+  color: #333333;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.app-nav-link:hover {
+  background-color: #e0e0e0; 
+}
+
 /* Timer */
 .timer-container {
   text-align: center;
@@ -112,41 +159,9 @@
 }
 
 .chart-wrapper {
-  position: relative;
   width: 140px;
   height: 140px;
   margin: 30px auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.chart-svg {
-  width: 100%;
-  height: 100%;
-  transform: rotate(-90deg);
-}
-
-.chart-progress-circle {
-  transition: stroke-dashoffset 0.5s ease-in-out;
-}
-
-.chart-center-text {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.chart-rate-num {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
-}
-
-.chart-rate-label {
-  font-size: 0.75rem;
-  color: #888;
 }
 
 .summary-container {
@@ -154,7 +169,8 @@
   justify-content: space-around;
   margin: 20px 0;
   padding: 15px;
-  background-color: #f8f9fa;
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 8px;
 }
 

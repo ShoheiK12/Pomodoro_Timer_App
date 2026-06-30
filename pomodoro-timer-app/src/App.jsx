@@ -11,11 +11,10 @@ function App() {
     <div className="app-container">
       <h1>Pomodoro Timer</h1>
       
-      {/* Nav */}
-      <nav style={{ marginBottom: '30px', padding: '10px', backgroundColor: '#f0f0f0' }}>
-        <Link to="/" style={{ marginRight: '15px' }}>⏱️ Timer</Link>
-        <Link to="/settings" style={{ marginRight: '15px' }}>⚙️ Settings</Link>
-        <Link to="/review">📝 Review</Link>
+      <nav className="app-nav">
+        <Link to="/" className="app-nav-link">⏱️ Timer</Link>
+        <Link to="/settings" className="app-nav-link">⚙️ Settings</Link>
+        <Link to="/review" className="app-nav-link">📝 Review</Link>
       </nav>
       
       <Outlet />

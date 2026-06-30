@@ -13,8 +13,8 @@ function Review() {
 
   // Extract today's study target and then convert it into number.
   const [targetTime, setTargetTime] = useState(() => {
-    const savedTime = localStorage.getItem('pomodoro_target_time');
-    return savedTime ? Number(savedTime) : 120;
+    const savedTarget = localStorage.getItem('pomodoro_target_time');
+    return savedTarget ? Number(savedTarget) : 120;
   });
 
   // Add up all of previous study histories to calculate total study time.
@@ -22,14 +22,6 @@ function Review() {
 
   // Calculate achievement rate
   const achievementRate = Math.min(Math.round((totalStudiedMinutes / targetTime) * 100), 100);
-  
-  // Pie chart parameters
-  // const radius = 50; 
-  // const strokeWidth = 10; 
-  // const circumference = radius * 2 * Math.PI;
-  // Calculate how many much of the line is hidden based on achievement rate.
-  // SVG strokeDashoffset can only control how much of the line is "hidden" (pushed out). To show the actual progress, we inversely calculate the hidden amount.
-  // const strokeDashoffset = circumference - (achievementRate / 100) * circumference;
 
   // Reset histories
   const handleClearHistory = () => {
@@ -46,54 +38,18 @@ function Review() {
       
       <div className="chart-wrapper">
         <CircularProgressbar
-          value={achievementRate} // 👈 現在の達成率（0〜100）
-          text={`${achievementRate}%`} // 👈 円の中央に表示するテキスト
+          value={achievementRate} 
+          text={`${achievementRate}%`} 
           styles={buildStyles({
-            // 💡 スタイルのカスタマイズ
-            strokeLinecap: 'round',     // 線の端を丸くする
-            textSize: '16px',           // 文字の大きさ
-            pathColor: '#007bff',       // 進捗バーの色（青）
-            textColor: '#333333',       // 中央の文字の色
-            trailColor: '#e6e6e6',      // バーの背景の土台の色（薄いグレー）
-            pathTransitionDuration: 0.5 // アニメーションにかかる時間（0.5秒）
+            strokeLinecap: 'round',
+            textSize: '16px',
+            pathColor: '#007bff',
+            textColor: '#333333', 
+            trailColor: '#e6e6e6', 
+            pathTransitionDuration: 0.5
           })}
         />
       </div>
-      
-      {/* Pie chart */}
-      {/* <div className="chart-wrapper">
-        
-        <svg className="chart-svg"> */}
-          {/* Base circle */}
-          {/* <circle
-            cx="70"
-            cy="70"
-            r={radius}
-            fill="transparent"
-            stroke="#e6e6e6"
-            strokeWidth={strokeWidth}
-          /> */}
-          {/* Blue circle showing progress */}
-          {/* <circle
-            cx="70"
-            cy="70"
-            r={radius}
-            fill="transparent"
-            stroke="#007bff"
-            strokeWidth={strokeWidth}
-            strokeDasharray={circumference}
-            strokeDashoffset={strokeDashoffset}
-            strokeLinecap="round" 
-            className="chart-progress-circle"
-          />
-        </svg> */}
-
-        {/* Display achievement rate inside circle */}
-        {/* <div className="chart-center-text">
-          <span className="chart-rate-num">{achievementRate}%</span>
-          <span sclassName="chart-rate-label">Achievement Rate</span>
-        </div>
-      </div> */}
       
       {/* Summary */}
       <div className="summary-container">

@@ -33,8 +33,8 @@ function Timer() {
   
   const [targetTime, setTargetTime] = useState(() => {
     // Load the setting saved in Local Storage (or the default of 120 minutes if it does not exist) as an initial value.
-    const savedTime = localStorage.getItem('pomodoro_target_time');
-    return savedTime ? Number(savedTime) : 120; 
+    const savedTarget = localStorage.getItem('pomodoro_target_time');
+    return savedTarget ? Number(savedTarget) : 120; 
   });
   
   useEffect(() => {
@@ -66,7 +66,7 @@ function Timer() {
        // Play audio -> If error occurs, display thia error in console.
        audio.play().catch(error => {
         console.log(error);
-       }) 
+       });
        
        setTimeout(() => {
         // When alert pops up on the screen, alert function stops JavaScript -> Once clicking OK, the next code (audio.pause) will be implemented.-> audio.currentTime = 0; Reset the playback position to 0 seconds.
@@ -83,20 +83,20 @@ function Timer() {
       if (mode === 'focus') {
         // Load the previously saved history list. If it does not exist, return an empty array [].
         // -> Since LocalStorage always overwrites existing data, if just save new data every time without loading the previous data first, LocalStorage will only ever contain the most recent entry.
-        const existingHistory = localStorage.getItem('pomodoro_history');
+        const studyHistory = localStorage.getItem('pomodoro_history');
         
-        // If existingHistory is found, convert it into aarray. Otherwise, return an empty array. 
+        // If studyHistory is found, convert it into aarray. Otherwise, return an empty array. 
         // .parse: Convert a string retrieved from Local Storage (which was originally an array turned into a string) back into an array that can be used for calculations in JavaScript.
-        const historyArray = existingHistory ? JSON.parse(existingHistory) : [];
+        const historyArray = studyHistory ? JSON.parse(studyHistory) : [];
         
         // Retrieve the latest target time string that the user saved in the settings screen from LocalStorage.
-        const savedFocusMinutes = localStorage.getItem('pomodoro_focus_time');
+        const savedFocusTime = localStorage.getItem('pomodoro_focus_time');
         
-        // If savedFocusMinutes, convert it to number. Otherwise, use default (25 mins).
-        const minutesToRecord = savedFocusMinutes ? Number(savedFocusMinutes) : 25;
+        // If savedFocusTime, convert it to number. Otherwise, use default (25 mins).
+        const focusRecord = savedFocusTime ? Number(savedFocusTime) : 25;
         
         // Add new study history to array.
-        historyArray.push(minutesToRecord);
+        historyArray.push(focusRecord);
         
         // Convert array into string, and then Save it in Local Storage.
         // .stringify: convert an array into string -> Local Storage can save only sring. 

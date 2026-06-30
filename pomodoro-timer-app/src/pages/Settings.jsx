@@ -5,8 +5,8 @@ import '../App.css';
 function Settings() {
   const [targetTime, setTargetTime] = useState(() => {
     // Load the setting saved in Local Storage (or the default of 120 minutes if it does not exist) as an initial value.
-    const savedTime = localStorage.getItem('pomodoro_target_time');
-    return savedTime ? Number(savedTime) : 120;
+    const savedTarget = localStorage.getItem('pomodoro_target_time');
+    return savedTarget ? Number(savedTarget) : 120;
   });
   
   // Set up focus time per session (default 25 mins).
