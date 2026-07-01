@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import '../App.css';
 
-// Test
-// const focusTime = 3;
-// const breakTime = 5;
-
 function Timer() {
   // Load the default values for focus and break intervals from LocalStorage.
-  // If no settings, default values of 25 minutes (1,500 seconds) and 5 minutes (300 seconds) will be used.
+  // If no settings, default values of 25 minutes (1,500 seconds) for focus time and 5 minutes (300 seconds) for break time.
   const [focusTime, setFocusTime] = useState(() => {
     // Lazy Initialization: Runs only once on the initial render to avoid reading from LocalStorage on every subsequent re-render.
     const savedFocus = localStorage.getItem('pomodoro_focus_time');
@@ -181,7 +177,7 @@ function Timer() {
           ⏩ [Dev] Skip to 0s
         </button>
         <p className="dev-skip-note">
-          *Note: This is skip button for development/test. You can force-quit the timer to test the history-saving feature.
+          *Note: This is skip button for development/test.
         </p>
       </div>
       
