@@ -32,7 +32,7 @@ To run this project locally on your machine, follow these steps:
 
 ### 1. Clone the Repository
 
-git clone [https://github.com/ShoheiK12/Pomodoro_Timer_App.git](https://github.com/ShoheiK12/Pomodoro_Timer_App.git)
+git clone [https://github.com/ShoheiK12/Pomodoro_Timer_App.git](https://github.com/ShoheiK12/Pomodoro_Timer_App.git)  
 cd Pomodoro_Timer_App
 
 ### 2. Install Dependencies
@@ -50,21 +50,21 @@ Once started, open your browser and navigate to http://localhost:5173 to interac
 ### 4. Production Build & Preview
 To test how the application performs after production compilation and optimization:
 
-npm run build
+npm run build  
 npm run preview
 
 Production Deployment 
 This project is fully optimised for hosting on Vercel. It includes a vercel.json configuration file to handle SPA routing correctly, preventing 404 Not Found errors when refreshing subroutes like /settings or /review.
 
-Handling SPA Routing on Vercel
+Handling SPA Routing on Vercel:  
 The routing behaviour is managed by the following rule in the root directory:
 
-JSON
-{
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
-}
+JSON  
+{  
+  "rewrites": [  
+    { "source": "/(.*)", "destination": "/index.html" }  
+  ]  
+}  
 
 ---
 
