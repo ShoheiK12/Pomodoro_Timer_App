@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Link, Outlet } from 'react-router';
-import Timer from './components/Timer'
+import PMDTimer from './components/Timer';
 import './App.css'
 
 function App() {

@@ -1,68 +1,55 @@
 import React, { useState, useEffect } from 'react';
 import '../App.css';
 
-function Timer() {
-  // Load the default values for focus and break intervals from LocalStorage.
-  // If no settings, default values of 25 minutes (1,500 seconds) for focus time and 5 minutes (300 seconds) for break time.
-  const [focusTime, setFocusTime] = useState(() => {
+function PMDTimer() {
+  const [studyTime, setStudyTime] = useState(() => {
     // Lazy Initialization: Runs only once on the initial render to avoid reading from LocalStorage on every subsequent re-render.
-    const savedFocus = localStorage.getItem('pomodoro_focus_time');
-    // Convert time from mins to secs. Because remaianingTime using wfocusTime is secs, so focusTime should be secs.
-    return savedFocus ? Number(savedFocus) * 60 : 25 * 60; // 
+    const savedStudy = localStorage.getItem('pomodoro_study_time');
+    return savedStudy ? Number(savedStudy) * 60 : 25 * 60; 
   });
 
   const [breakTime, setBreakTime] = useState(() => {
-    // If no settings, break time is 5 mins (300 secs).
     // Lazy Initialization.
     const savedBreak = localStorage.getItem('pomodoro_break_time');
     return savedBreak ? Number(savedBreak) * 60 : 5 * 60;
   });
   
-  // Manage remaining time. Set up focusTime (1500 secs) as an initial value.
-  const [remainingTime, setRemainingTime] = useState(focusTime);
-  // Manage if timer is active or not.
+  const [remainingTime, setRemainingTime] = useState(studyTime);
+  
   const [isActive, setIsActive] = useState(false);
   
-  const [mode, setMode] = useState('focus');
+  const [mode, setMode] = useState('study');
   
   const [isMuted, setIsMuted] = useState(false);
   
-  const [targetTime, setTargetTime] = useState(() => {
-    // Load the setting saved in Local Storage (or the default of 120 minutes if it does not exist) as an initial value.
+  const [target, setTarget] = useState(() => {
     const savedTarget = localStorage.getItem('pomodoro_target_time');
     return savedTarget ? Number(savedTarget) : 120; 
   });
   
+  // Manage the real-time countdown progression and ensures background resources are instantly cleaned up to Optimise app performance.
   useEffect(() => {
     let intervalId = null;
     
     if(isActive && remainingTime > 0) {
       intervalId = setInterval(() => {
-        // Decrease remainingTime by 1 every second
-        setRemainingTime((prevSecond) => prevSecond -1);
+        setRemainingTime((prevSec) => prevSec -1);
       }, 1000);
     } else if (isActive && remainingTime === 0) {
-      // if timer is active but remaining time is 0, stop timer. 
       setIsActive(false);
     }
     
-    // Clean up to prevent memory leak
     return () => {
       if (intervalId) clearInterval(intervalId);
     };
   }, [isActive, remainingTime]);
   
-  // Mode control between focus or break
+  // Handle the session completion workflow by triggering audio-visual alerts, keeping study records securely, and transitioning between study and break intervals.
   useEffect(() => {
-    // if Timer is 0 and timer is active, mode will change.
     if (remainingTime === 0 && isActive) {
       if (!isMuted) {
-       // Alarm audio
        const audio = new Audio('/alarm.mp3')
-       // Play audio -> If error occurs, display thia error in console.
-       audio.play().catch(error => {
-        console.log(error);
-       });
+       audio.play();
        
        setTimeout(() => {
         // When alert pops up on the screen, alert function stops JavaScript -> Once clicking OK, the next code (audio.pause) will be implemented.-> audio.currentTime = 0; Reset the playback position to 0 seconds.
@@ -71,89 +58,76 @@ function Timer() {
         audio.currentTime = 0;
        }, 100);
       } else {
-        // When muted, only alert pop-up (no alarm).
         alert("Time's up!");
       }
       
-      // Only when focus is done, record the study time.
-      if (mode === 'focus') {
-        // Load the previously saved history list. If it does not exist, return an empty array [].
-        // -> Since LocalStorage always overwrites existing data, if just save new data every time without loading the previous data first, LocalStorage will only ever contain the most recent entry.
+      // Only when study is done, record the study time.
+      if (mode === 'study') {
+        // Load the previously saved history list. If it does not exist, return an empty array []. -> Since LocalStorage always overwrites existing data, if just save new data every time without loading the previous data first, LocalStorage will only ever contain the most recent entry.
         const studyHistory = localStorage.getItem('pomodoro_history');
         
-        // If studyHistory is found, convert it into aarray. Otherwise, return an empty array. 
-        // .parse: Convert a string retrieved from Local Storage (which was originally an array turned into a string) back into an array that can be used for calculations in JavaScript.
-        const historyArray = studyHistory ? JSON.parse(studyHistory) : [];
+        const historyArr = studyHistory ? JSON.parse(studyHistory) : [];
         
-        // Retrieve the latest target time string that the user saved in the settings screen from LocalStorage.
-        const savedFocusTime = localStorage.getItem('pomodoro_focus_time');
+        const savedStudyTime = localStorage.getItem('pomodoro_study_time');
+
+        const studyNum = savedStudyTime ? Number(savedStudyTime) : 25;
         
-        // If savedFocusTime, convert it to number. Otherwise, use default (25 mins).
-        const focusRecord = savedFocusTime ? Number(savedFocusTime) : 25;
+        historyArr.push(studyNum);
         
-        // Add new study history to array.
-        historyArray.push(focusRecord);
-        
-        // Convert array into string, and then Save it in Local Storage.
-        // .stringify: convert an array into string -> Local Storage can save only sring. 
-        localStorage.setItem('pomodoro_history', JSON.stringify(historyArray));
+        localStorage.setItem('pomodoro_history', JSON.stringify(historyArr));
       }
       
-      if (mode === 'focus') {
-        // Once focus is done, switch to break mode.
+      if (mode === 'study') {
         setMode('break');
         setRemainingTime(breakTime);
       } else {
-        // Once break is done, switch to focus mode.
-        setMode('focus');
-        setRemainingTime(focusTime);
+        setMode('study');
+        setRemainingTime(studyTime);
       }
       
-      // Once mode is changed, timer automatically restarts (5 mins(break) or 25 mis(focus)).  -> If don't want automatic start, then set setIsActive(false).
+      // Once mode is changed, timer automatically restarts (5 mins(break) or 25 mis(study)). -> If don't want automatic start, then set setIsActive(false).
       setIsActive(true);  
     }
-  }, [remainingTime, isActive, mode, isMuted, focusTime, breakTime]);
+  }, [remainingTime, isActive, mode, isMuted, studyTime, breakTime]);
   
   // Display time
-  const formatTime = (seconds) => {
+  const displayTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
 
-  // eventHandler for button-click
   const toggleTimer = () => {
     setIsActive(!isActive);
   };
 
-  const resetTimer = () => {
+  const resetPMD = () => {
     setIsActive(false);
-    setRemainingTime(mode === 'focus' ? focusTime : breakTime); 
+    setRemainingTime(mode === 'study' ? studyTime : breakTime); 
   };
   
-  // Skip function for development
-  const handleSkip = () => {
+  const skipPMD = () => {
     if (isActive) {
       // If timer is active, skip remaining time (remaining time is gonaa be 0 sec).
       setRemainingTime(0);
     } else {
-      alert('Unable to skip the remaining time when timer is not active. Please start timer.');
+      alert('You cannot skip the remaining time. Please start timer.');
     }
   };
 
   return (
     <div className="timer-container">
       <div className="target-badge">
-        🎯 Today's Study Target : <strong>{targetTime} mins</strong>（{(targetTime / 60).toFixed(1)} hours）
+        🎯 Today's Study Target : <strong>{target} mins</strong>（{(target / 60).toFixed(1)} hours）
       </div>
 
       <br />
       
-      <strong className={mode === 'focus' ? 'mode-label-focus' : 'mode-label-break'}>
-        {mode === 'focus' ? '💻 Study Time' : '☕ Break time'}
+      <strong className={mode === 'study' ? 'mode-label-study' : 'mode-label-break'}>
+        {mode === 'study' ? '💻 Study Time' : '☕ Break time'}
       </strong>
       
-      <h1>{formatTime(remainingTime)}</h1>
+      <h1>{displayTime(remainingTime)}</h1>
       
       {/* 1. When opening this app, isActive:false
           2. When clicking button, toggleTimer will be active, which means isActive:true  
@@ -162,7 +136,7 @@ function Timer() {
         {isActive ? 'Pause' : 'Start'}
       </button>
       
-      <button onClick={resetTimer} className="timer-button-secondary">
+      <button onClick={resetPMD} className="timer-button-secondary">
         Reset
       </button>
       
@@ -173,7 +147,7 @@ function Timer() {
       {/* Skip button for development/test. */}
       <div className="dev-skip-container">
         <button 
-          onClick={handleSkip} className="dev-skip-button">
+          onClick={skipPMD} className="dev-skip-button">
           ⏩ [Dev] Skip to 0s
         </button>
         <p className="dev-skip-note">
@@ -185,4 +159,4 @@ function Timer() {
   );
 }
 
-export default Timer;
+export default PMDTimer;

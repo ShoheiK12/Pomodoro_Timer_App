@@ -12,7 +12,7 @@ function Review() {
   });
 
   // Extract today's study target and then convert it into number.
-  const [targetTime, setTargetTime] = useState(() => {
+  const [target, setTarget] = useState(() => {
     const savedTarget = localStorage.getItem('pomodoro_target_time');
     return savedTarget ? Number(savedTarget) : 120;
   });
@@ -21,7 +21,7 @@ function Review() {
   const totalStudiedMinutes = history.reduce((sum, current) => sum + current, 0);
 
   // Calculate achievement rate
-  const achievementRate = Math.min(Math.round((totalStudiedMinutes / targetTime) * 100), 100);
+  const achievementRate = Math.min(Math.round((totalStudiedMinutes / target) * 100), 100);
 
   // Reset histories
   const handleClearHistory = () => {
@@ -55,7 +55,7 @@ function Review() {
       <div className="summary-container">
         <div>
           <span className="summary-label">Today's Target</span>
-          <h3 className="summary-value">{targetTime} mins</h3>
+          <h3 className="summary-value">{target} mins</h3>
         </div>
         <div className="summary-divider"></div>
         <div>

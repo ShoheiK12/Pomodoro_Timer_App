@@ -3,32 +3,30 @@ import { useState } from 'react';
 import '../App.css';
 
 function Settings() {
-  const [targetTime, setTargetTime] = useState(() => {
+  const [target, setTarget] = useState(() => {
     // Load the setting saved in Local Storage (or the default of 120 minutes if it does not exist) as an initial value.
     const savedTarget = localStorage.getItem('pomodoro_target_time');
     return savedTarget ? Number(savedTarget) : 120;
   });
   
-  // Set up focus time per session (default 25 mins).
-  const [focusTime, setFocusTime] = useState(() => {
-    const savedFocus = localStorage.getItem('pomodoro_focus_time');
-    return savedFocus ? Number(savedFocus) : 25; 
+  // Set up study time per session (default 25 mins).
+  const [studyTime, setStudyTime] = useState(() => {
+    const savedStudy = localStorage.getItem('pomodoro_study_time');
+    return savedStudy ? Number(savedStudy) : 25; 
   });
   
   // Process when the form is submitted (the save button is clicked).
   const handleSubmit = (e) => {
-    // Prevent the default browser reload on form submission.
-    // -> Because, by default, forms reload the page, which would wipe out the React state and timer count.
-    // e: event; button clicked and form submitted
+    // Prevent the default browser reload on form submission. -> By default, forms reload the page, which would wipe out the React state and timer count.
     e.preventDefault();
     
     // Save the total study time as 'pomodoro_target_time'.
-    localStorage.setItem('pomodoro_target_time', targetTime);
+    localStorage.setItem('pomodoro_target_time', target);
     
-    // Save focus time per session as 'pomodoro_focus_time'.
-    localStorage.setItem('pomodoro_focus_time', focusTime);
+    // Save study time per session as 'pomodoro_study_time'.
+    localStorage.setItem('pomodoro_study_time', studyTime);
     
-    alert(`Saved your target time successfully.\nToday's target: ${targetTime} mins（${(targetTime / 60).toFixed(1)} hours), Focus time per session: ${focusTime} mins`)
+    alert(`Saved your target time successfully.\nToday's target: ${target} mins（${(target / 60).toFixed(1)} hours), Study time per session: ${studyTime} mins`)
   }
   return (
     <div className="settings-wrapper">
@@ -41,24 +39,24 @@ function Settings() {
             Target time by mins: 
             <input 
             type="number" 
-            value={targetTime} 
-            onChange={(e) => setTargetTime(Number(e.target.value))}
+            value={target} 
+            onChange={(e) => setTarget(Number(e.target.value))}
             min="1"
             className="settings-number-input"
             />
           </label>
           <div className="settings-help-text">
-            ➔ Conversion from mins to hours: <strong>{(targetTime / 60).toFixed(1)} hours</strong>
+            ➔ Conversion from mins to hours: <strong>{(target / 60).toFixed(1)} hours</strong>
           </div>
         </div>
         
         <div className="settings-field-group">
           <label className="settings-label-text">
-            Focus time by mins: 
+            Study time by mins: 
             <input 
               type="number" 
-              value={focusTime} 
-              onChange={(e) => setFocusTime(Number(e.target.value))}
+              value={studyTime} 
+              onChange={(e) => setStudyTime(Number(e.target.value))}
               min="1"
               className="settings-number-input"
             />
