@@ -51,7 +51,7 @@ body {
   margin-top: 50px;
 }
 
-.target-badge {
+.target {
   margin-bottom: 20px;
   padding: 10px;
   background-color: #e9ecef;
@@ -59,28 +59,34 @@ body {
   display: inline-block;
 }
 
-.mode-label-study {
+.study-mode {
   color: #ff6b6b;
 }
 
-.mode-label-break {
+.break-mode {
   color: #34ebae; 
 }
 
-.timer-button {
-  margin-right: 10px;
-  padding: 10px 20px;
+.btn-group {
+  display: flex;
+  justify-content: center; 
+  gap: 10px;
 }
 
-.timer-button-secondary {
-  padding: 10px 20px;
+.btn {
+  box-sizing: border-box;
+  width: 110px;
+  height: 42px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
-.dev-skip-container {
-  margin-top: 30px;
-}
-
-.dev-skip-button {
+.skip-button {
+  width: 100%; 
+  margin-top: 15px;
   padding: 5px 10px;
   font-size: 0.8rem;
   background-color: #ffebee;
@@ -90,11 +96,6 @@ body {
   cursor: pointer;
 }
 
-.dev-skip-note {
-  font-size: 0.75rem;
-  color: #999;
-  margin-top: 5px;
-}
 
 /* Settings */
 .settings-wrapper {
@@ -125,20 +126,20 @@ body {
   font-size: 1.1rem;
 }
 
-.settings-number-input {
+.time-input {
   padding: 8px;
   margin-left: 10px;
   width: 80px;
   font-size: 1rem;
 }
 
-.settings-help-text {
+.help-text {
   color: #666;
   font-size: 0.9rem;
   margin-top: 5px;
 }
 
-.settings-save-button {
+.settings-save-btn {
   padding: 10px;
   background-color: #28a745;
   color: white;
@@ -194,7 +195,9 @@ body {
 }
 
 .summary-divider {
-  border-left: 1px solid #ccc;
+  border-left: 1px solid rgba(0, 0, 0, 0.2);
+  align-self: stretch;
+  margin: 5px 0;
 }
 
 .empty-history-text {
@@ -216,7 +219,7 @@ body {
   justify-content: space-between;
 }
 
-.history-reset-button {
+.history-reset-btn {
   margin-top: 30px;
   padding: 8px 15px;
   background-color: #dc3545;
@@ -227,7 +230,7 @@ body {
   font-size: 0.9rem;
 }
 
-.history-reset-button:hover {
+.history-reset-btn:hover {
   background-color: #c82333; 
 }
 

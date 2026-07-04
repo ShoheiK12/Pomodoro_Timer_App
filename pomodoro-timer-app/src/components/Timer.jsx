@@ -23,11 +23,11 @@ function PMDTimer() {
   const [isMuted, setIsMuted] = useState(false);
   
   const [target, setTarget] = useState(() => {
-    const savedTarget = localStorage.getItem('pomodoro_target_time');
-    return savedTarget ? Number(savedTarget) : 120; 
+    const targetRec = localStorage.getItem('pomodoro_target_time');
+    return targetRec ? Number(targetRec) : 120; 
   });
   
-  // Manage the real-time countdown progression and ensures background resources are instantly cleaned up to Optimise app performance.
+  // Manage the real-time countdown progression and ensures background resources are instantly cleaned up to optimise app performance.
   useEffect(() => {
     let intervalId = null;
     
@@ -90,7 +90,6 @@ function PMDTimer() {
     }
   }, [remainingTime, isActive, mode, isMuted, studyTime, breakTime]);
   
-  // Display time
   const displayTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -117,43 +116,39 @@ function PMDTimer() {
 
   return (
     <div className="timer-container">
-      <div className="target-badge">
+      <div className="target">
         🎯 Today's Study Target : <strong>{target} mins</strong>（{(target / 60).toFixed(1)} hours）
       </div>
 
       <br />
       
-      <strong className={mode === 'study' ? 'mode-label-study' : 'mode-label-break'}>
+      <strong className={mode === 'study' ? 'study-mode' : 'break-mode'}>
         {mode === 'study' ? '💻 Study Time' : '☕ Break time'}
       </strong>
       
       <h1>{displayTime(remainingTime)}</h1>
       
-      {/* 1. When opening this app, isActive:false
+      <div className="btn-group">
+        {/* 1. When opening this app, isActive:false
           2. When clicking button, toggleTimer will be active, which means isActive:true  
           3. When isActive:true, 'Pause' will appear.*/}
-      <button onClick={toggleTimer} className="timer-button">
-        {isActive ? 'Pause' : 'Start'}
-      </button>
-      
-      <button onClick={resetPMD} className="timer-button-secondary">
-        Reset
-      </button>
-      
-      <button onClick={() => setIsMuted(!isMuted)} className="timer-button-secondary">
-        {isMuted ? '🔇 Unmute' : '🔊 Mute'}
-      </button>
-      
-      {/* Skip button for development/test. */}
-      <div className="dev-skip-container">
-        <button 
-          onClick={skipPMD} className="dev-skip-button">
-          ⏩ [Dev] Skip to 0s
+        <button onClick={toggleTimer} className="btn">
+          {isActive ? 'Pause' : 'Start'}
         </button>
-        <p className="dev-skip-note">
-          *Note: This is skip button for development/test.
-        </p>
+      
+        <button onClick={resetPMD} className="btn">
+          Reset
+        </button>
+      
+        <button onClick={() => setIsMuted(!isMuted)} className="btn">
+          {isMuted ? 'Unmute' : 'Mute'}
+        </button>
       </div>
+      
+      <button onClick={skipPMD} className="skip-button">
+        ⏩ Skip to 0s
+      </button>
+
       
     </div>
   );

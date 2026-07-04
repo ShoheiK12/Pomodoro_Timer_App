@@ -5,27 +5,23 @@ import 'react-circular-progressbar/dist/styles.css';
 import '../App.css';
 
 function Review() {
-  // Extract study histories from Local Storage and then convert them into array.
   const [history, setHistory] = useState(() => {
-    const savedHistory = localStorage.getItem('pomodoro_history');
-    return savedHistory ? JSON.parse(savedHistory) : [];
+    const studyHistory = localStorage.getItem('pomodoro_history');
+    return studyHistory ? JSON.parse(studyHistory) : [];
   });
 
-  // Extract today's study target and then convert it into number.
   const [target, setTarget] = useState(() => {
-    const savedTarget = localStorage.getItem('pomodoro_target_time');
-    return savedTarget ? Number(savedTarget) : 120;
+    const targetRec = localStorage.getItem('pomodoro_target_time');
+    return targetRec ? Number(targetRec) : 120;
   });
 
-  // Add up all of previous study histories to calculate total study time.
-  const totalStudiedMinutes = history.reduce((sum, current) => sum + current, 0);
-
-  // Calculate achievement rate
-  const achievementRate = Math.min(Math.round((totalStudiedMinutes / target) * 100), 100);
+  // Formula to calculate study data.
+  const studyTotal = history.reduce((sum, current) => sum + current, 0);
+  const achievementRate = Math.min(Math.round((studyTotal / target) * 100), 100);
 
   // Reset histories
-  const handleClearHistory = () => {
-    // windows.confirm: Confirmation pop-up -> If clicking OK, return true, which means implementing if sentence. If clicking cancel, return false, which means not meeting condition.
+  const clearHistory = () => {
+    // windows.confirm: Confirmation pop-up -> If clicking OK, return true, which means implementing sentence. If clicking cancel, return false, which means not meeting condition.
     if (window.confirm('Do you want to delete all study histories?')) {
       localStorage.removeItem('pomodoro_history');
       setHistory([]);
@@ -51,7 +47,6 @@ function Review() {
         />
       </div>
       
-      {/* Summary */}
       <div className="summary-container">
         <div>
           <span className="summary-label">Today's Target</span>
@@ -60,7 +55,7 @@ function Review() {
         <div className="summary-divider"></div>
         <div>
           <span className="summary-label">Total Study Time</span>
-          <h3 className="summary-value-green">{totalStudiedMinutes} mins</h3>
+          <h3 className="summary-value-green">{studyTotal} mins</h3>
         </div>
         <div className="summary-divider"></div>
         <div>
@@ -69,8 +64,7 @@ function Review() {
         </div>
       </div>
       
-      {/* Display study histories */}
-      ### 🕒 Study session history ### 
+      <h2>### Study session history ### </h2>
       <br /><br />
       Pomodoro counts: {history.length}
       {history.length === 0 ? (
@@ -86,9 +80,8 @@ function Review() {
         </ul>
       )}
       
-      {/* Reset button */}
       {history.length > 0 && (
-        <button onClick={handleClearHistory} className="history-reset-button">
+        <button onClick={clearHistory} className="history-reset-btn">
           Reset study histories.
         </button>
       )}

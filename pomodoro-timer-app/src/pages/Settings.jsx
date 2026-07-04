@@ -4,26 +4,21 @@ import '../App.css';
 
 function Settings() {
   const [target, setTarget] = useState(() => {
-    // Load the setting saved in Local Storage (or the default of 120 minutes if it does not exist) as an initial value.
-    const savedTarget = localStorage.getItem('pomodoro_target_time');
-    return savedTarget ? Number(savedTarget) : 120;
+    const targetRec = localStorage.getItem('pomodoro_target_time');
+    return targetRec ? Number(targetRec) : 120;
   });
   
-  // Set up study time per session (default 25 mins).
   const [studyTime, setStudyTime] = useState(() => {
     const savedStudy = localStorage.getItem('pomodoro_study_time');
     return savedStudy ? Number(savedStudy) : 25; 
   });
   
-  // Process when the form is submitted (the save button is clicked).
   const handleSubmit = (e) => {
     // Prevent the default browser reload on form submission. -> By default, forms reload the page, which would wipe out the React state and timer count.
     e.preventDefault();
     
-    // Save the total study time as 'pomodoro_target_time'.
     localStorage.setItem('pomodoro_target_time', target);
     
-    // Save study time per session as 'pomodoro_study_time'.
     localStorage.setItem('pomodoro_study_time', studyTime);
     
     alert(`Saved your target time successfully.\nToday's target: ${target} mins（${(target / 60).toFixed(1)} hours), Study time per session: ${studyTime} mins`)
@@ -31,42 +26,38 @@ function Settings() {
   return (
     <div className="settings-wrapper">
       <h2>Study Time Setting</h2>
-      <p>Set your total target study time for today.</p>
 
       <form onSubmit={handleSubmit} className="settings-form">
         <div className="settings-field-group">
           <label className="settings-label-text">
-            Target time by mins: 
+            Total target time by mins: 
             <input 
             type="number" 
             value={target} 
             onChange={(e) => setTarget(Number(e.target.value))}
             min="1"
-            className="settings-number-input"
+            className="time-input"
             />
           </label>
-          <div className="settings-help-text">
-            ➔ Conversion from mins to hours: <strong>{(target / 60).toFixed(1)} hours</strong>
-          </div>
         </div>
         
         <div className="settings-field-group">
           <label className="settings-label-text">
-            Study time by mins: 
+            Session time by mins: 
             <input 
               type="number" 
               value={studyTime} 
               onChange={(e) => setStudyTime(Number(e.target.value))}
               min="1"
-              className="settings-number-input"
+              className="time-input"
             />
           </label>
-          <div className="settings-help-text">
-            ➔ Default is 25 mins. This will be recorded in your history.
-          </div>
+          <div className="help-text">
+            ➔ Default is 25 mins.
+          </div> 
         </div>
 
-        <button type="submit" className="settings-save-button">
+        <button type="submit" className="settings-save-btn">
           Save the setting
         </button>
       </form>
