@@ -2,6 +2,22 @@ import React from 'react';
 import { useState } from 'react';
 import '../App.css';
 
+/*
+ Settings - User Configuration Management Component
+  
+ [Core Features]
+ - Configure customised time metrics.
+ - Synchronise updated parameters safely into LocalStorage for persistent app settings.
+ 
+ [Data Layer]
+ - Lazily hydrates initial input states from LocalStorage with fallback defaults (120 min target / 25 min study).
+ 
+ [Form Submission]
+ - `handleSubmit`: 
+ 1. Neutralises native form reload side-effects via `e.preventDefault()`
+ 2. Commit updated states to storage
+ 3. Dispatch a detailed confirmation alert.
+ */
 function Settings() {
   const [target, setTarget] = useState(() => {
     const targetRec = localStorage.getItem('pomodoro_target_time');
@@ -9,8 +25,8 @@ function Settings() {
   });
   
   const [studyTime, setStudyTime] = useState(() => {
-    const savedStudy = localStorage.getItem('pomodoro_study_time');
-    return savedStudy ? Number(savedStudy) : 25; 
+    const studyRec = localStorage.getItem('pomodoro_study_time');
+    return studyRec ? Number(studyRec) : 25; 
   });
   
   const handleSubmit = (e) => {
@@ -23,6 +39,7 @@ function Settings() {
     
     alert(`Saved your target time successfully.\nToday's target: ${target} mins（${(target / 60).toFixed(1)} hours), Study time per session: ${studyTime} mins`)
   }
+  
   return (
     <div className="settings-wrapper">
       <h2>Study Time Setting</h2>

@@ -1,17 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import '../App.css';
 
+/*
+ PMDTimer - Pomodoro Timer Component
+  
+ [Core Features]
+ - Context-aware countdown state (Study / Break modes) with auto-switching.
+ - Handle persistence for user configurations and historical study logs via LocalStorage.
+ - Audio-visual feedback alerts triggered upon completion of each interval.
+ 
+ [State Management Flow]
+ 1. Initialise study, break, and target goals using lazy loading from LocalStorage.
+ 2. `remainingTime` tracks the ongoing countdown, tied closely to the active mode.
+ */
 function PMDTimer() {
   const [studyTime, setStudyTime] = useState(() => {
     // Lazy Initialization: Runs only once on the initial render to avoid reading from LocalStorage on every subsequent re-render.
-    const savedStudy = localStorage.getItem('pomodoro_study_time');
-    return savedStudy ? Number(savedStudy) * 60 : 25 * 60; 
+    const studyRec = localStorage.getItem('pomodoro_study_time');
+    return studyRec ? Number(studyRec) * 60 : 25 * 60; 
   });
 
   const [breakTime, setBreakTime] = useState(() => {
     // Lazy Initialization.
-    const savedBreak = localStorage.getItem('pomodoro_break_time');
-    return savedBreak ? Number(savedBreak) * 60 : 5 * 60;
+    const breakRec = localStorage.getItem('pomodoro_break_time');
+    return breakRec ? Number(breakRec) * 60 : 5 * 60;
   });
   
   const [remainingTime, setRemainingTime] = useState(studyTime);
@@ -68,9 +80,9 @@ function PMDTimer() {
         
         const historyArr = studyHistory ? JSON.parse(studyHistory) : [];
         
-        const savedStudyTime = localStorage.getItem('pomodoro_study_time');
+        const studyTimeRec = localStorage.getItem('pomodoro_study_time');
 
-        const studyNum = savedStudyTime ? Number(savedStudyTime) : 25;
+        const studyNum = studyTimeRec ? Number(studyTimeRec) : 25;
         
         historyArr.push(studyNum);
         
@@ -145,7 +157,7 @@ function PMDTimer() {
         </button>
       </div>
       
-      <button onClick={skipPMD} className="skip-button">
+      <button onClick={skipPMD} className="skip-btn">
         ⏩ Skip to 0s
       </button>
 

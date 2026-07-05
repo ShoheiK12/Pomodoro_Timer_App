@@ -4,6 +4,21 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import '../App.css';
 
+/*
+ Review - Data Analytics & History Management Component
+  
+ [Core Features]
+ - Visualize study analytics (total progress and goal achievement rates).
+ - Track history logs and daily target metrics persistent in LocalStorage.
+ - Provide delete function.
+ 
+ [Data Flow & Derived State]
+ - Hydrates state using lazy initialization from LocalStorage.
+ - `studyTotal` & `achievementRate`: Calculated on the fly dynamically on each render.
+  
+ [Actions]
+ - `clearHistory`: Interactive data delete function.
+ */
 function Review() {
   const [history, setHistory] = useState(() => {
     const studyHistory = localStorage.getItem('pomodoro_history');
@@ -50,17 +65,17 @@ function Review() {
       <div className="summary-container">
         <div>
           <span className="summary-label">Today's Target</span>
-          <h3 className="summary-value">{target} mins</h3>
+          <h3 className="target-value">{target} mins</h3>
         </div>
         <div className="summary-divider"></div>
         <div>
           <span className="summary-label">Total Study Time</span>
-          <h3 className="summary-value-green">{studyTotal} mins</h3>
+          <h3 className="total-study-value">{studyTotal} mins</h3>
         </div>
         <div className="summary-divider"></div>
         <div>
           <span className="summary-label">Achievement Rate</span>
-          <h3 className="summary-value-blue">{achievementRate}%</h3>
+          <h3 className="achievement-rate-value">{achievementRate}%</h3>
         </div>
       </div>
       
