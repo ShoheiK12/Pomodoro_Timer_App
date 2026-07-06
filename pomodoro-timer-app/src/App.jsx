@@ -9,7 +9,7 @@ function App() {
   return (
     
     <div className="app-container">
-      <h1>Pomodoro Timer</h1>
+      <h1 className="app-title">Pomodoro Timer</h1>
       
       <nav className="app-nav">
         <Link to="/" className="app-nav-link">⏱️ Timer</Link>

@@ -45,7 +45,7 @@ function Review() {
   
   return (
     <div className="review-container">
-      <h1>Review</h1>
+      <h1 className="review-title">Review</h1>
       
       <div className="chart-wrapper">
         <CircularProgressbar
@@ -53,11 +53,12 @@ function Review() {
           text={`${achievementRate}%`} 
           styles={buildStyles({
             strokeLinecap: 'round',
-            textSize: '16px',
+            textSize: '20px',
             pathColor: '#007bff',
             textColor: '#333333', 
             trailColor: '#e6e6e6', 
-            pathTransitionDuration: 0.5
+            pathTransitionDuration: 0.5,
+            fontWeight: 'bold'
           })}
         />
       </div>
@@ -79,12 +80,14 @@ function Review() {
         </div>
       </div>
       
-      <h2>### Study session history ### </h2>
+      <h2 className="history-title">Study session history</h2>
       <br /><br />
-      Pomodoro counts: {history.length}
-      {history.length === 0 ? (
-        <p className="empty-history-text">There is no study histories for today yet. Let's complete today's session.</p>
-      ) : (
+      
+      <div>
+        <p className="history-count">Pomodoro counts: {history.length}</p>
+        {history.length === 0 ? (
+          <p className="empty-history-text">* There is no study histories for today yet. Let's complete today's session.</p>
+        ) : (
         <ul className="history-list">
           {history.map((minutes, index) => (
             <li key={index} className="history-item">
@@ -94,6 +97,8 @@ function Review() {
           ))}
         </ul>
       )}
+      </div>
+      
       
       {history.length > 0 && (
         <button onClick={clearHistory} className="history-reset-btn">

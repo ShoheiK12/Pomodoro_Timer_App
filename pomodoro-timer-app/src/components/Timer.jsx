@@ -144,15 +144,15 @@ function PMDTimer() {
         {/* 1. When opening this app, isActive:false
           2. When clicking button, toggleTimer will be active, which means isActive:true  
           3. When isActive:true, 'Pause' will appear.*/}
-        <button onClick={toggleTimer} className="btn">
+        <button onClick={toggleTimer} className={`btn ${mode === 'study' ? 'study-btn' : 'break-btn'}`}>
           {isActive ? 'Pause' : 'Start'}
         </button>
       
-        <button onClick={resetPMD} className="btn">
+        <button onClick={resetPMD} className={`btn ${mode === 'study' ? 'study-btn' : 'break-btn'}`}>
           Reset
         </button>
       
-        <button onClick={() => setIsMuted(!isMuted)} className="btn">
+        <button onClick={() => setIsMuted(!isMuted)} className={`btn ${mode === 'study' ? 'study-btn' : 'break-btn'}`}>
           {isMuted ? 'Unmute' : 'Mute'}
         </button>
       </div>

@@ -42,7 +42,7 @@ function Settings() {
   
   return (
     <div className="settings-wrapper">
-      <h2>Study Time Setting</h2>
+      <h2 className="settings-title">Study Time Setting</h2>
 
       <form onSubmit={handleSubmit} className="settings-form">
         <div className="settings-field-group">
@@ -70,7 +70,7 @@ function Settings() {
             />
           </label>
           <div className="help-text">
-            ➔ Default is 25 mins.
+            * Default is 25 mins.
           </div> 
         </div>
 
