@@ -4,6 +4,14 @@
 
 ---
 
+## Motivation & Purpose
+
+The inspiration behind this project stems from a personal challenge many developers face: the constant temptation to check my mobile phone during my study sessions. Despite spending hours at my desk, I found my focus fragmented and the actual learning outcomes less effective than desired.
+
+Upon discovering the proven effectiveness of the Pomodoro Technique, and learning that it could be built using React, I decided to develop pomodoro app by myself. This application was developed with a dual purpose: to build a practical tool that genuinely enhances my daily productivity and focus, while simultaneously serving as a hands-on, real-world exercise to solidify my React development skills.
+
+---
+
 ## Features
 
 * **Customisable Timer:** Easily adjust study intervals and break durations to suit your workflow.
@@ -23,6 +31,23 @@
 * **Routing:** React Router 7 (Configured with custom server-side rewrites for seamless production hosting)
 * **Styling:** CSS3
 * **Components:** `react-circular-progressbar` for the dynamic timer interface
+
+---
+
+## Challenges & Key Learnings
+Developing this application presented several technical challenges that required deep diving into React architecture and modern web design principles. 
+
+1. Architecting the Real-Time Countdown Mechanism
+Ensuring that the countdown ticked smoothly every second without causing memory leaks or unpredictable re-renders required a meticulous approach. I had to master synchronisation within useEffect, learning how to handle interval side-effects and implement rigorous cleanup operations so background resources are instantly released when the timer stops or shifts modes.
+
+2. Mastering Complex LocalStorage State Persistence
+Implementing the persistent history and user configuration features was a major hurdle. I had to establish a seamless data pipeline. Managing data layer was a profound learning curve, while preventing data overwrites and leveraging lazy state initialisation for optimal rendering performance,
+
+3. Client-Side Routing Configurations
+Transitioning the application from a simple single-view script into a multi-page feel (Timer, Review, and Settings) introduced the challenge of client-side routing. Setting up the routing architecture correctly, managing smooth transitions between views without breaking the global application state, and ensuring a fluid user flow required careful planning and implementation.
+
+4. Crafting Polish and Intuitiveness with CSS
+Designing a clean, engaging user interface was a highly iterative and challenging process. Overcoming CSS specificity conflicts and tailoring the UI to feel intuitive was immensely rewarding.
 
 ---
 
@@ -48,7 +73,7 @@ npm run dev
 Once started, open your browser and navigate to http://localhost:5173 to interact with the application.
 
 ### 4. Production Build & Preview
-To test how the application performs after production compilation and optimization:
+To test how the application performs after production compilation and optimisation:
 
 npm run build  
 npm run preview
