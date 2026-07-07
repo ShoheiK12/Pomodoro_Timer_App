@@ -37,19 +37,19 @@ Upon discovering the proven effectiveness of the Pomodoro Technique, and learnin
 ## Challenges & Key Learnings
 Developing this application presented several technical challenges that required deep diving into React architecture and modern web design principles. 
 
-1. Architecting the Real-Time Countdown Mechanism
+* **Architecting the Real-Time Countdown Mechanism**
 
 Ensuring that the countdown ticked smoothly every second without causing memory leaks or unpredictable re-renders required a meticulous approach. Mastering synchronisation within useEffect necessitated learning how to handle interval side-effects and implementing rigorous cleanup operations to ensure the instant release of background resources upon timer cessation or mode shifts.
 
-2. Mastering Complex LocalStorage State Persistence
+* **Mastering Complex LocalStorage State Persistence**
 
 Implementing the persistent history and user configuration features was a major hurdle. The establishment of a seamless data pipeline introduced a significant learning curve regarding data layer management, which involved preventing data overwrites and leveraging lazy state initialisation for optimal rendering performance.
 
-3. Client-Side Routing Configurations
+* **Client-Side Routing Configurations**
 
 Transitioning the application from a simple single-view script into a multi-page feel (Timer, Review, and Settings) introduced the challenge of client-side routing. Setting up the routing architecture correctly, managing smooth transitions between views without breaking the global application state, and ensuring a fluid user flow required careful planning and implementation.
 
-4. Crafting Polish and Intuitiveness with CSS
+* **Crafting Polish and Intuitiveness with CSS**
 
 Designing a clean, engaging user interface was a highly iterative and challenging process. Overcoming CSS specificity conflicts and tailoring the UI to feel intuitive was immensely rewarding.
 
