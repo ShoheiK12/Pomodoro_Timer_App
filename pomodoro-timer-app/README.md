@@ -60,8 +60,10 @@ Designing a clean, engaging user interface was a highly iterative and challengin
 To run this project locally on your machine, follow these steps:
 
 ### 1. Clone the Repository
-```bash
+
 git clone [https://github.com/ShoheiK12/Pomodoro_Timer_App.git](https://github.com/ShoheiK12/Pomodoro_Timer_App.git)  
+
+```bash
 cd Pomodoro_Timer_App
 ```
 
