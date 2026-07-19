@@ -60,27 +60,34 @@ Designing a clean, engaging user interface was a highly iterative and challengin
 To run this project locally on your machine, follow these steps:
 
 ### 1. Clone the Repository
-
+```bash
 git clone [https://github.com/ShoheiK12/Pomodoro_Timer_App.git](https://github.com/ShoheiK12/Pomodoro_Timer_App.git)  
 cd Pomodoro_Timer_App
+```
 
 ### 2. Install Dependencies
 Install all the required packages listed in the package.json file:
 
+```bash
 npm install
+```
 
 ### 3. Launch Development Server
 Start the local development server with Hot Module Replacement (HMR) enabled:
 
+```bash
 npm run dev
+```
 
 Once started, open your browser and navigate to http://localhost:5173 to interact with the application.
 
 ### 4. Production Build & Preview
 To test how the application performs after production compilation and optimisation:
 
+```bash
 npm run build  
 npm run preview
+```
 
 Production Deployment 
 This project is fully optimised for hosting on Vercel. It includes a vercel.json configuration file to handle SPA routing correctly, preventing 404 Not Found errors when refreshing subroutes like /settings or /review.
