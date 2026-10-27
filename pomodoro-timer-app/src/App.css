@@ -27,27 +27,38 @@ body {
 }
 
 .app-nav {
-  color: #6cb4e4;
-  padding: 0.25em;
-  border-top: solid 5px #6cb4e4;
-  border-bottom: solid 5px #6cb4e4;
-  background: repeating-linear-gradient(-45deg, #f0f8ff, #f0f8ff 3px,#e9f4ff 3px, #e9f4ff 7px);
-  border-radius: 6px;
+  background: #fff;
+  padding: 0;
+  margin: 0;
+  border-radius: 4px;
   display: flex;
-  justify-content: center;
 }
 
 .app-nav-link {
-  color: #333333;
-  text-decoration: none;
+  flex: 1;
+  display: block;
   font-weight: 500;
-  padding: 5px 10px;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
+  margin: 0;
+  padding: 20px 25px;
+  color: #333;
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  overflow: hidden;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .app-nav-link:hover {
-  background-color: #e0e0e0; 
+  background-color: #f8f9fa;
+  color: #007bff;
+  border-bottom-color: #007bff;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
 }
 
 /* Timer */
